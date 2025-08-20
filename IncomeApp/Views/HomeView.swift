@@ -10,12 +10,40 @@ import SwiftUI
 struct HomeView: View {
     
     @State private var transactions = [
-        Transaction(title: "Butterfly", amount: 1411089, type: .expense, date: Date()),
-        Transaction(title: "Bayonet M9", amount: 845980, type: .expense, date: Date())
+        Transaction(title: "Smoke Out", amount: 115000, type: .expense, date: Date()),
+        Transaction(title: "Talon Vanilla", amount: 295000, type: .expense, date: Date())
     ]
     
     @State private var showAddTransactionView = false
     @State private var transactionToEdit: Transaction?
+    
+    private var expenses: String {
+        let totalExpenses = transactions.filter({ $0.type == .expense }).reduce(0) { $0 + $1.amount }
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter.string(from: totalExpenses as NSNumber) ?? "0 KZT"
+    }
+    
+    private var income: String {
+        let totalIncome = transactions.filter( { $0.type == .income }).reduce(0) { $0 + $1.amount }
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter.string(from: totalIncome as NSNumber) ?? "0 KZT"
+    }
+    
+    private var balance: String {
+        var totalBalance = 0
+        for transaction in transactions {
+            if transaction.type == .income {
+                totalBalance += transaction.amount
+            } else {
+                totalBalance -= transaction.amount
+            }
+        }
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter.string(from: totalBalance as NSNumber) ?? "0 KZT"
+    }
     
     fileprivate func FloatingButton() -> some View {
         VStack {
@@ -46,21 +74,21 @@ struct HomeView: View {
                         .padding(.top)
                     Spacer()
                 }
-                Text("2 000 000 KZT")
+                Text(balance + " KZT")
                     .foregroundStyle(.white)
                     .font(.system(size: 42, weight: .light))
                 HStack(spacing: 20) {
                     VStack(alignment: .leading) {
                         Text("Expenses")
                             .foregroundStyle(.white)
-                        Text("999 999 KZT")
+                        Text(expenses + " KZT")
                             .foregroundStyle(.red)
                             .fontWeight(.semibold)
                     }
                     VStack(alignment: .leading) {
                         Text("Income")
                             .foregroundStyle(.white)
-                        Text("999 999 KZT")
+                        Text(income + " KZT")
                             .foregroundStyle(.green)
                             .fontWeight(.semibold)
                     }
