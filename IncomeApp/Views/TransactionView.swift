@@ -34,5 +34,5 @@ struct TransactionView: View {
 }
 
 #Preview {
-    TransactionView(transaction: Transaction(title: "Butterfly", amount: 1411089, type: .expense, date: Date()))
+    TransactionView(transaction: Transaction(title: "Salary", amount: 999999, type: .income, date: Date()))
 }
