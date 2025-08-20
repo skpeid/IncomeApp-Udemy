@@ -69,6 +69,13 @@ struct AddTransactionView: View {
             .padding(.top)
             .padding(.horizontal, 50)
         }
+        .onAppear(perform: {
+            if let transaction = transaction {
+                title = transaction.title
+                amount = transaction.amount
+                selectedTransactionType = transaction.type
+            }
+        })
         .alert(alertTitle, isPresented: $showAlert) {
             Button {
                 

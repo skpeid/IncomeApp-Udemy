@@ -14,7 +14,7 @@ struct HomeView: View {
         Transaction(title: "Bayonet M9", amount: 845980, type: .expense, date: Date())
     ]
     
-    @State private var editTransaction = false
+    @State private var showAddTransactionView = false
     @State private var transactionToEdit: Transaction?
     
     fileprivate func FloatingButton() -> some View {
@@ -81,7 +81,7 @@ struct HomeView: View {
                     List {
                         ForEach(transactions) { transaction in
                             Button {
-                                editTransaction.toggle()
+                                transactionToEdit = transaction
                             } label: {
                                 TransactionView(transaction: transaction)
                                     .foregroundStyle(.black)
@@ -94,10 +94,10 @@ struct HomeView: View {
                 FloatingButton()
             }
             .navigationTitle("Home")
-//            .navigationDestination(item: , destination: { transaction in
-//                AddTransactionView(transactions: $transactions, transaction: transaction)
-//            })
-            .navigationDestination(isPresented: $editTransaction) {
+            .navigationDestination(item: $transactionToEdit, destination: { transaction in
+                AddTransactionView(transaction: transaction, transactions: $transactions)
+            })
+            .navigationDestination(isPresented: $showAddTransactionView) {
                 AddTransactionView(transactions: $transactions)
             }
         }
