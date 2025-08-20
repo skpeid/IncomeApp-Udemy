@@ -53,6 +53,12 @@ struct AddTransactionView: View {
                     showAlert = true
                     return
                 }
+                guard amount != 0 else {
+                    alertTitle = "Enter Amount"
+                    alertMessage = "Amount cannot be zero"
+                    showAlert = true
+                    return
+                }
                 let newTransaction = Transaction(title: title, amount: amount, type: selectedTransactionType, date: Date())
                 
                 if let transaction = transaction {
