@@ -10,8 +10,9 @@ import SwiftUI
 struct HomeView: View {
     
     @State private var transactions = [
-        Transaction(title: "Smoke Out", amount: 115000, type: .expense, date: Date()),
-        Transaction(title: "Talon Vanilla", amount: 295000, type: .expense, date: Date())
+        Transaction(title: "Lunch", amount: 2500, type: .expense, date: Date()),
+        Transaction(title: "Salary", amount: 320000, type: .income, date: Date()),
+        Transaction(title: "Internet", amount: 16900, type: .expense, date: Date())
     ]
     
     @State private var showAddTransactionView = false
@@ -114,8 +115,8 @@ struct HomeView: View {
                                 TransactionView(transaction: transaction)
                                     .foregroundStyle(.black)
                             }
-
                         }
+                        .onDelete(perform: delete)
                     }
                     .scrollContentBackground(.hidden)
                 }
@@ -129,6 +130,10 @@ struct HomeView: View {
                 AddTransactionView(transactions: $transactions)
             }
         }
+    }
+    
+    private func delete(at offsets: IndexSet) {
+        transactions.remove(atOffsets: offsets)
     }
 }
 
